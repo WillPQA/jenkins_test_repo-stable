@@ -1,0 +1,19 @@
+2022-06-09 08:19:55,221 INFO  ApiController:175 - [] Sending Suggestion Email
+2022-06-09 08:20:17,297 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:21:31,872 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:22:44,045 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:24:11,365 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:25:06,727 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:26:37,605 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:45:34,235 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 08:48:20,869 INFO  ApiController:179 - [] Sending Suggestion Email
+2022-06-09 11:42:42,003 ERROR FlowDiagramParser:46 - [] .\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 11:44:09,464 ERROR FlowDiagramParser:49 - [] .\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 11:45:17,462 ERROR FlowDiagramParser:49 - [] .\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 11:47:37,501 ERROR FlowDiagramParser:49 - [] .\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 11:50:22,606 ERROR FlowDiagramParser:49 - [] .\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 13:04:09,534 ERROR FlowDiagramParser:50 - [] C:\Users\WilliamMazerolle\Documents\GitHub\shed\toolshed-services.\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 13:04:45,290 ERROR FlowDiagramParser:50 - [] C:\Users\WilliamMazerolle\Documents\GitHub\shed\toolshed-services\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 13:06:42,464 ERROR FlowDiagramParser:50 - [] C:\Users\WilliamMazerolle\Documents\GitHub\shed\toolshed-services\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 13:06:44,144 ERROR FlowDiagramParser:50 - [] C:\Users\WilliamMazerolle\Documents\GitHub\shed\toolshed-services\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)
+2022-06-09 13:07:03,424 ERROR FlowDiagramParser:50 - [] C:\Users\WilliamMazerolle\Documents\GitHub\shed\toolshed-services\src\main\java\com\pqashed\shed\tools\documents\CompleteToolshedFlowchart.xlsx (The system cannot find the path specified)

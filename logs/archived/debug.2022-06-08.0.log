@@ -1,0 +1,21 @@
+2022-06-08 13:31:34,949 INFO  ApiController:175 - [] Sending Suggestion Email
+2022-06-08 13:40:43,181 INFO  ApiController:175 - [] Sending Suggestion Email
+2022-06-08 14:54:13,881 ERROR DbController:91 - [] Bad value for type int : Image Comparison Tool
+2022-06-08 14:54:45,299 ERROR DbController:91 - [] Bad value for type int : Image Comparison Tool
+2022-06-08 15:38:10,412 ERROR DbController:89 - [] Operation requires a scrollable ResultSet, but this ResultSet is FORWARD_ONLY.
+2022-06-08 15:40:35,211 ERROR DbController:91 - [] .\text\imageComparison.txt
+2022-06-08 15:42:14,861 ERROR DbController:91 - [] .\text\imageComparison.txt
+2022-06-08 15:42:36,170 ERROR DbController:91 - [] .\html
+2022-06-08 15:44:17,645 ERROR DbController:91 - [] .\text\imageComparison.txt
+2022-06-08 15:45:19,397 ERROR DbController:91 - [] .\html
+2022-06-08 15:49:13,320 ERROR DbController:91 - [] .\text\imageComparison.txt
+2022-06-08 15:50:23,682 ERROR DbController:93 - [] FILE ERROR:  .\html
+2022-06-08 15:52:54,020 ERROR DbController:92 - [] FILE ERROR:  .\text\imageComparison.txt
+2022-06-08 15:54:08,755 ERROR DbController:92 - [] FILE ERROR:  .\tools\text\imageComparison.txt
+2022-06-08 15:56:33,189 ERROR DbController:92 - [] FILE ERROR:  [Ljava.lang.StackTraceElement;@2dcc0e8f
+2022-06-08 15:57:03,086 ERROR DbController:92 - [] FILE ERROR:  [Ljava.lang.StackTraceElement;@4be6422c
+2022-06-08 15:57:50,669 ERROR DbController:93 - [] FILE ERROR:  .\tools\text\imageComparison.txt
+2022-06-08 16:00:04,879 ERROR DbController:97 - [] FILE ERROR:  .\tools\text\imageComparison.txt
+2022-06-08 16:28:15,386 INFO  ApiController:175 - [] Sending Suggestion Email
+2022-06-08 16:29:51,036 INFO  ApiController:175 - [] Sending Suggestion Email
+2022-06-08 16:40:47,166 INFO  ApiController:175 - [] Sending Suggestion Email

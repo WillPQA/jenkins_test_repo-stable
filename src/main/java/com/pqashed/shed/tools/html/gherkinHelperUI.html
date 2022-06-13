@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="PQA-TESTING.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shed - Issues</title>
+</head>
+
+<body>
+    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Drag and Drop a CSV file into this box</p>
+    </div>
+
+    <pre id="gherkin-result">Enter a CSV to recieve a result</pre>
+</body>
+
+
+<style type="text/css">
+html {
+    background-color: rgb(18, 18, 18);
+}
+
+p {
+    color: graY;
+}
+
+pre{
+    color: white;
+}
+
+#drop_zone {
+  border: 5px dashed gray;
+  width:  80vw;
+  height: 8vh;
+  text-align: center;
+  margin: 1vh 10vw;
+}
+
+#drop_zone p {
+    margin: 2.5vh 0;
+    font-size: large;
+
+}
+
+#drop_zone:hover {
+    border-color: white;
+}
+
+#drop_zone:hover > p {
+    color: white;
+}
+
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    async function dropHandler(ev) {
+        console.log('File(s) dropped');
+
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+
+        if (ev.dataTransfer.items) {
+            // Use DataTransferItemList interface to access the file(s)
+            if(ev.dataTransfer.items.length > 1) {
+                console.log("Only Accepts One File at a Time!!!!")
+            } else {
+                if (ev.dataTransfer.items[0].kind === 'file') {
+                    var file = ev.dataTransfer.items[0].getAsFile();
+                    console.log('file.name = ' + file.name);
+                    if(file.name.endsWith('.csv')){
+                        console.log(file)
+                        const resp = await axios.post('http://localhost:3001/api/tools/gherkinhelper', file, {headers: {'Content-type': file.type}})
+                            .then(response => {return response.data})
+                        console.log(resp)
+                        document.getElementById("gherkin-result").innerText = resp;
+                    } else {
+                        console.log("NOT A CSV FILE!!!")
+                    }
+                }
+            }
+        }
+    }
+
+    function dragOverHandler(ev) {
+        console.log('File(s) in drop zone');
+
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+    }
+</script>
+</html>

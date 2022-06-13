@@ -1,0 +1,9 @@
+insert into reported_errors(title, subject) values('Apples', 'Apples are too crunchy');
+insert into reported_errors(title, subject) values('Bananas', 'Bananas are too ripe');
+insert into reported_errors(title, subject) values('Carrots', 'Carrots are too orange');
+insert into reported_errors(title, subject) values('Dill', 'Dill is too dilly');
+insert into reported_errors(title, subject) values('Endives', 'Endives are too Belgian');
+
+
+truncate reported_errors;
+delete from reported_errors;

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="PQA-TESTING.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shed - Issues</title>
+</head>
+
+<body>
+    <div id="optionsBar">
+        <p>Select Your Options Here</p>
+        <ul id="categories" onload="load()">
+        </ul>
+    </div>
+
+    <div id="submissionAndExtraction">
+        <input type="text" id="rowCount" placeholder="Enter the Number of Rows You Would Like">
+        <button type="button" id="submit" onclick="getFakeData()">Submit</button>
+    </div>
+    <div id="download">
+        <a disabled="true">Download CSV</a>
+    </div>
+
+</body>
+
+
+<style type="text/css">
+body {
+    background-color: rgb(18, 18, 18);
+}
+p {
+    display: flex;
+    color: gray;
+    justify-content: center;
+}
+#optionsBar {
+    margin-bottom: 15vh;
+}
+#rowCount {
+    width: 30vw
+}
+#submissionAndExtraction {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3vh;
+}
+#download {
+    display: flex;
+    justify-content: center;
+}
+#download a {
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+}
+#download a:enabled {
+    color: white;
+}
+#download a:hover:enabled {
+    border-style: solid;
+    border-radius: 2vh;
+}
+
+#categories {
+    display: flex;
+    justify-content: center;
+}
+#categories li {
+    display: inline-block;
+    padding: 1vh 2vw;
+    position: relative;
+    background-color: lightblue;
+    color: black;
+    text-align: center;
+    width: 100%;
+    max-width: 8vw;
+    margin-right: 1vw;
+}
+ul, li {
+    list-style: none;
+    list-style-position: inside;
+}
+
+#categories li ul {
+    list-style-position: inside;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+#categories li ul li{
+    display: inline-block;
+    text-align: left;
+    padding: 0 auto 0 0;
+    width: 100%;
+    max-width: 8vw;
+}
+
+#categories li:hover ul {
+    display: block;
+
+
+
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    let checkboxData
+    let listOptions
+    load()
+
+    async function enableDownload() {
+        document.getElementById("download").getElementsByTagName('a')[0].disabled = false;
+    }
+
+    async function load() {
+        listOptions = await axios.get('http://localhost:3001/api/tools/faker/options')
+            .then(response => {return response.data})
+        console.log(listOptions)
+
+        let list = document.getElementById("categories")
+
+        for (let o = 0; o < listOptions.length; o++) {
+            let li = document.createElement('li');
+            li.appendChild(document.createTextNode(listOptions[o].name));
+            let options = document.createElement('ul')
+            console.log(listOptions[o].options)
+            for(let i = 0; i < listOptions[o].options.length; i++) {
+                console.log(listOptions[o].options[i])
+                let option = document.createElement('li')
+                let input = document.createElement('input')
+                input.setAttribute('type', 'checkbox')
+
+                option.appendChild(input)
+                option.appendChild(document.createTextNode(listOptions[o].options[i]))
+                options.appendChild(option)
+            }
+            li.appendChild(options)
+            list.appendChild(li);
+        }
+    }
+
+    async function getFakeData() {
+        console.log("TESTT")
+
+        getCheckboxData()
+
+        const numRows = parseInt(document.getElementById("rowCount").value)
+
+        const resp = await axios.post('http://localhost:3001/api/tools/faker', {numRows: numRows, parameterString: checkboxData})
+            .then(response => {return response.data})
+        
+        const blob = new Blob(["\ufeff", resp])
+        let url = URL.createObjectURL(blob)
+
+        const downloadAnchor = document.getElementById("download").getElementsByTagName('a')[0]
+        downloadAnchor.href = url
+        downloadAnchor.download = 'fake.csv'
+
+        enableDownload()
+        console.log("Download Enabled")
+    }
+
+    async function getCheckboxData() {
+        checkboxData = ""
+        const checkboxes = document.getElementsByTagName("input")
+        isFirstInList = true;
+        for(i = 0; i < checkboxes.length; i++) {
+            let checkboxCompenent
+
+            if (checkboxes[i].checked && checkboxes[i].type == "checkbox") {
+                if(!isFirstInList){checkboxData += ","}
+                else{isFirstInList = false}
+                checkboxCompenent = checkboxes[i].parentElement.innerText.replaceAll(" ", "").replaceAll("\n", "").match(/[A-Z][a-z]+|[0-9]+/g).join("_")
+                
+                checkboxData += checkboxes[i].parentElement.parentElement.parentElement.innerText + "." + checkboxCompenent.toLowerCase()
+                 
+            }
+        }
+
+        console.log(checkboxData)
+    }
+
+</script>
+</html>

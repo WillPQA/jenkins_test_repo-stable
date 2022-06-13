@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shed - Issues</title>
+</head>
+
+<body>
+    <div id="optionsBar">
+        <button type="button" onclick="openAllPairsWorkspace()">All Pairs</button>
+        <button type="button" onclick="openPermutationsWorkspace()">Permutations</button>
+        <button type="button" onclick="openCombinatoricsWorkspace()">Combinatorics</button>
+    </div>
+
+    <div id="workspace">
+        <input type="text" id="m" placeholder="Length m of the combinations" autocomplete="off">
+        <textarea id="permutationsWorkspace" placeholder="Enter the values of your set (seperated by line)"></textarea>
+        <textarea id="combinatoricsWorkspace" placeholder="Enter the values of your set (seperated by line)"></textarea>
+        <div id="pairsTable">
+            <div id="rows">
+                <input type="text" onkeyup="populatePairsTable()"></input><button type="button" onclick="addRow()" id="addRow">+</button>
+            </div>
+            <div id="operationSelector">
+                <select name="operations" id="operations" onchange="populatePairsTable()">
+                    <option value="concat">Concat</option>
+                    <option value="add">Add</option>
+                    <option value="multiply">Multiply</option>
+                    <option value="or">Or</option>
+                    <option value="and">And</option>
+                </select>
+            </div>
+            <div id="columns">
+                <input type="text" onkeyup="populatePairsTable()"></input><button type="button" onclick="addColumn()" id="addColumn">+</button>
+            </div>
+            <div id="table">
+                <table>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="submissionAndExtraction">
+        <button type="button" id="submit" onclick="">Submit</button>
+        <div>
+            <textarea id="output" readonly="true"></textarea>
+        </div>
+        <a id="download">Download</a>
+    </div>
+
+</body>
+
+
+<style type="text/css">
+#pairsTable {
+    display: grid;
+    grid-template-columns: 8vw 60vw;
+    grid-gap: 10px;
+    padding: 5%;
+    justify-content: center;
+}
+#operationSelector {
+    grid-row: 1;
+    grid-column: 1;
+}
+#operations {
+    width: 100%;
+    height: 100%;
+}
+#columns {
+    grid-row: 1;
+    grid-column: 2;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    max-width: 100%;
+}
+#columns button {
+    width: 15%;
+}
+#columns input {
+    width: 13vw;
+}
+#rows {
+    grid-row-start: 2;
+    grid-column: 1;
+    justify-content: center;
+}
+#rows * {
+    padding: 0.3% 0;
+}
+#rows input {
+    width: 98.5%;
+    height: 2.5vh;
+    margin-top: 0.1vh;
+}
+#rows button{
+    width: 100%;
+    margin: auto 1.25%;
+}
+#table {
+    grid-row-start: 2;
+    grid-column-start: 2;
+    color: white;
+    width: 60vw;
+    overflow-x: auto;
+}
+table {
+    max-width: 60vw;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+tr {
+    white-space: nowrap;
+}
+td {
+    display: inline-block;
+    border-style: solid;
+    border-color: white;
+    border-width: 0.05vh 0.05vw;
+    width: 13vw;
+    height: 2.5vh;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+body{
+    background-color: rgb(18, 18, 18);
+}
+input {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+#optionsBar {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 7vh auto;
+}
+
+#optionsBar button{
+    display: inline-block;
+    margin: 0 1vw;
+    background-color: transparent;
+    color: white;
+    border-style: solid;
+    border-color: white;
+}
+
+#m {
+    width: 30vw;
+    display: none;
+    margin: 0 auto;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border-style: solid;
+    border-color: white;
+}
+#m:focus {
+    color: white;
+    background-color: transparent;
+}
+
+textarea {
+    display: none;
+    width: 75vw;
+    height: 50vh;
+    margin: 1vh auto 0;
+    resize: none;
+    border-style: solid;
+    background-color: transparent;
+    color: white;
+    scrollbar-color: dark;
+}
+
+#submit {
+    margin: 2vh auto;
+    display: none;
+    background-color: transparent;
+    color: white;
+    border-style: solid;
+    border-color: white;
+    padding: 1vh 1vw;
+}
+
+#download {
+    color: white;
+    border-style: solid;
+    padding: 1vh 1vw;
+    justify-content: center;
+    width: 7%;
+    display: none;
+    margin: 8vh auto;
+    position: relative;
+}
+
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+    let checkboxData;
+
+    async function openCombinatoricsWorkspace() {
+        document.getElementById("m").style.display = "block"
+        document.getElementById("permutationsWorkspace").style.display = "none"
+        document.getElementById("combinatoricsWorkspace").style.display = "block"
+        document.getElementById("pairsTable").style.display = "none"
+        document.getElementById("submit").setAttribute("onclick", "javascript: submitCombinatorics()")
+        document.getElementById("submit").style.display = "flex"
+        document.getElementById("output").style.display = "none"
+        document.getElementById("download").style.display = "none"
+    }
+
+    async function openPermutationsWorkspace() {
+        document.getElementById("m").style.display = "none"
+        document.getElementById("permutationsWorkspace").style.display = "block"
+        document.getElementById("combinatoricsWorkspace").style.display = "none"
+        document.getElementById("pairsTable").style.display = "none"
+        document.getElementById("submit").setAttribute("onclick", "javascript: submitPermutations()")
+        document.getElementById("submit").style.display = "flex"
+        document.getElementById("output").style.display = "none"
+        document.getElementById("download").style.display = "none"
+    }
+
+    async function openAllPairsWorkspace() {
+        document.getElementById("m").style.display = "none"
+        document.getElementById("permutationsWorkspace").style.display = "none"
+        document.getElementById("combinatoricsWorkspace").style.display = "none"
+        document.getElementById("pairsTable").style.display = "flex"
+        document.getElementById("submit").setAttribute("onclick", "javascript: submitAllPairs()")
+        document.getElementById("submit").style.display = "none"
+        document.getElementById("output").style.display = "none"
+        document.getElementById("download").style.display = "none"
+    }
+
+    async function submitCombinatorics() {
+        console.log("SUBMIT")
+        results = await axios.post('http://localhost:3001/api/tools/allpairs/combinatorics', {m: await document.getElementById("m").value, set: await document.getElementById("combinatoricsWorkspace").value.split("\n")})
+            .then(response => {return response.data})
+        let outputArea = document.getElementById("output")
+        outputArea.innerHTML = results.replace("[[", "[").replace("]]", "]")
+        outputArea.style.display = "block"
+        createCSV(results.replaceAll("[", "").replaceAll("]", ""))
+    }
+
+    async function submitPermutations() {
+        console.log("SUBMIT2")
+        results = await axios.post('http://localhost:3001/api/tools/allpairs/permutations', {set: await document.getElementById("permutationsWorkspace").value.split("\n")})
+            .then(response => {return response.data})
+        console.log("Loading Element...")
+        let outputArea = document.getElementById("output")
+        outputArea.innerHTML = results.replace("[[", "[").replace("]]", "]")
+        outputArea.style.display = "block"
+        createCSV(results.replaceAll("[", "").replaceAll("]", ""))
+    }
+
+    async function addColumn() {
+        let newInput = document.getElementById("columns").getElementsByTagName("input")[0].cloneNode(false)
+        newInput.value = ""
+        document.getElementById("columns").insertBefore(newInput, document.getElementById("addColumn"))
+        if(document.getElementById("columns").scrollWidth > document.getElementById("columns").clientWidth){
+            console.log(await document.getElementById("rows").style.top)
+            document.getElementById("rows").style.top = "14.2vh"
+        }
+    }
+
+    async function addRow() {
+        let newInput = document.getElementById("rows").getElementsByTagName("input")[0].cloneNode(false)
+        newInput.value = ""
+        document.getElementById("rows").insertBefore(newInput, document.getElementById("addRow"))
+    }
+
+    async function populatePairsTable() {
+        document.getElementsByTagName("table")[0].innerHTML = ""
+        let rows = document.getElementById("rows").getElementsByTagName("input")
+        let columns = document.getElementById("columns").getElementsByTagName("input")
+        let operation = document.getElementById("operations").value
+        let csvString = ""
+        for(let r = 0; r < rows.length; r++) {
+            let tr = document.createElement("tr")
+            for(let c = 0; c < columns.length; c++) {
+                let td = document.createElement("td")
+                try {
+                    switch(operation){
+                        case "concat":
+                            td.innerHTML = rows[r].value + " " + columns[c].value
+                            break
+                        case "add":
+                            td.innerHTML = parseFloat(rows[r].value) + parseFloat(columns[c].value)
+                            break
+                        case "multiply":
+                            td.innerHTML = parseFloat(rows[r].value) * parseFloat(columns[c].value)
+                            break
+                        case "or":
+                            let firstBoolOr = rows[r].value.toLowerCase()
+                            if(firstBoolOr == "f" || firstBoolOr == "false"){firstBoolOr = false} else {firstBoolOr = true}
+
+                            let secondBoolOr = columns[c].value.toLowerCase()
+                            if(secondBoolOr == "f" || secondBoolOr == "false"){secondBoolOr = false} else {secondBoolOr = true}
+
+                            td.innerHTML = firstBoolOr || secondBoolOr
+                            break
+                        case "and":
+                            let firstBoolAnd = rows[r].value.toLowerCase()
+                            if(firstBoolAnd == "f" || firstBoolAnd == "false"){firstBoolAnd = false} else {firstBoolAnd = true}
+
+                            let secondBoolAnd = columns[c].value.toLowerCase()
+                            if(secondBoolAnd == "f" || secondBoolAnd == "false"){secondBoolAnd = false} else {secondBoolAnd = true}
+
+                            td.innerHTML = firstBoolAnd && secondBoolAnd
+                            break
+                        default:
+                            td.innerHTML = "err"
+                            break
+                    }
+                } catch(e) {console.log(">> "+e)}
+                tr.appendChild(td)
+                csvString += td.innerHTML.replace(",", "") + ","
+            }
+            document.getElementsByTagName("table")[0].appendChild(tr)
+            csvString += "\n"
+            createCSV(csvString)
+        }
+    }
+
+    async function createCSV(csvString){
+        const blob = new Blob(["\ufeff", csvString])
+        let url = URL.createObjectURL(blob)
+        const downloadAnchor = document.getElementById("download")
+        downloadAnchor.href = url
+        downloadAnchor.download = 'Combinations.csv'
+        downloadAnchor.style.display = "flex"
+    }
+
+</script>
+</html>
